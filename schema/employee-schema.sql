@@ -11,6 +11,3 @@ CREATE TABLE employees(
 
 ALTER TABLE employees
 ADD FOREIGN KEY(role_id) REFERENCES roles(id);
-
-Alter TABLE employees
-ADD FOREIGN KEY(manager_id) REFERENCES  employees(id);
