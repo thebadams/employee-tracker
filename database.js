@@ -37,6 +37,7 @@ class Database{
     }
     // get information functions
     displayEmployeesTable(){
+        //this.connectToDB();
         this.connection.query(`SELECT * FROM ${this.tables.employeeTable}`, (err, res)=>{
             if(err) throw err;
             console.table(res);
@@ -54,13 +55,38 @@ class Database{
             console.table(res);
         })
     }
+
+    // get tables raw information
+    getEmployeesTable(){
+        //this.connectToDB();
+        this.connection.query(`SELECT * FROM ${this.tables.employeeTable}`, (err, res)=>{
+            if(err) throw err;
+            return res;
+        })
+    }
+
+    getDepartmentsTable(){
+        this.connection.query(`SELECT * FROM ${this.tables.departmentTable}`, (err, res)=>{
+            if(err) throw err;
+            return res;
+        })
+    }
+
+    getRolesTable(){
+        this.connection.query(`SELECT * FROM ${this.tables.roleTable}`, (err,res)=>{
+            if(err) throw err;
+            return res;
+        })
+    }
+
+
 }
 
 const database = new Database()
 
-// database.createDBConnection();
+//database.createDBConnection();
 // database.connectToDB();
-// database.displayEmployeesTable();
+//database.displayEmployeesTable();
 // database.displayDepartmentsTable();
 // database.displayRolesTable();
 // database.disconnectFromDB();
