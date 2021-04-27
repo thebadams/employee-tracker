@@ -10,4 +10,5 @@ VALUES("Senior Engineer", 100000, 3),
 ("Director of Legal Affairs", 150000, 1),
 ("Human Resources Administrator", 40000, 2),
 ("Human Resources Manager", 70000, 2),
-("Director of Human Resources", 125000, 2);
+("Director of Human Resources", 125000, 2),
+("Director of Engineering", 200000, 3);
