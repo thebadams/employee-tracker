@@ -79,12 +79,24 @@ class Database{
         })
     }
 
+    // insert new rows
+    
+    addNewDepartment(){
+         this.connection.query(`INSERT INTO ${this.tables.departmentTable}(name) VALUES('Administration')`, (err, res)=>{
+             if(err) throw err;
+             console.table(res);
+         })
+    }
+       
+    
+
 
 }
 
 const database = new Database()
 
-//database.createDBConnection();
+database.createDBConnection();
+database.addNewDepartment();
 // database.connectToDB();
 //database.displayEmployeesTable();
 // database.displayDepartmentsTable();
