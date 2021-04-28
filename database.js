@@ -81,22 +81,35 @@ class Database{
 
     // insert new rows
     
-    addNewDepartment(){
-         this.connection.query(`INSERT INTO ${this.tables.departmentTable}(name) VALUES('Administration')`, (err, res)=>{
+    addNewDepartment(departmentName){
+         this.connection.query(`INSERT INTO ${this.tables.departmentTable}(name) VALUES('${departmentName}')`, (err, res)=>{
              if(err) throw err;
-             console.table(res);
+            console.log("Successfully Added")
          })
     }
-       
-    
 
+    addNewRole(roleTitle, salary, department_id) {
+        this.connection.query(`INSERT INTO ${this.tables.roleTable}(title, salary, department_id) VALUES('${roleTitle}', ${salary}, ${department_id})`, (err, res)=>{
+            if(err) throw err;
+            console.log("Successfully Added");
+        })
+    }
 
+    addNewEmployee(first_name, last_name, role_id, manager_id){
+        this.connection.query((`INSERT INTO ${this.tables.employeeTable} VALUES('${first_name}', '${last_name}, ${role_id}, ${manager_id})`), (err, res)=>{
+            if(err) throw err
+            console.log("Success")
+        })
+    }
 }
 
 const database = new Database()
 
 database.createDBConnection();
-database.addNewDepartment();
+// database.addNewDepartment('Administration');
+database.addNewRole('Secratary', 30000, 6);
+// database.addNewEmployee('George', 'Lopez', 14)
+database.disconnectFromDB();
 // database.connectToDB();
 //database.displayEmployeesTable();
 // database.displayDepartmentsTable();
