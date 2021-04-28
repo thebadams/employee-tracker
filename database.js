@@ -96,7 +96,7 @@ class Database{
     }
 
     addNewEmployee(first_name, last_name, role_id, manager_id){
-        this.connection.query((`INSERT INTO ${this.tables.employeeTable} VALUES('${first_name}', '${last_name}, ${role_id}, ${manager_id})`), (err, res)=>{
+        this.connection.query((`INSERT INTO ${this.tables.employeeTable} VALUES('${first_name}', '${last_name}', ${role_id}, ${manager_id})`), (err, res)=>{
             if(err) throw err
             console.log("Success")
         })
