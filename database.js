@@ -101,6 +101,25 @@ class Database{
             console.log("Success")
         })
     }
+    updateEmployee(firstName, lastName, roleID, managerID, whereClause){
+        this.connection.query(`UPDATE ${this.tables.employeeTable} SET  first_name = '${firstName}', last_name = '${lastName}', role_id =${roleID}, manager_id=${managerID} WHERE ?`, whereClause,  (err, res)=>{
+            if(err) throw err;
+            console.log("Successfully Updated")
+        })
+    }
+    updateRole(title, department_id, salary, whereClause){
+        this.connection.query(`UPDATE ${this.tables.roleTable} SET title='${title}', salary=${salary}, department_id=${department_id} WHERE ?`, whereClause, (err, res)=>{
+            if(err) throw err;
+            console.log("Successfully Updated")
+        })
+    }
+
+    updateDepartment(name, whereClause){
+        this.connection.query(`UPDATE ${this.tables.departmentTable} SET name='${name} WHERE ?`, whereClause, (err, res)=>{
+            if(err) throw err;
+            console.log("Successfully Updated")
+        })
+    }
 }
 
 const database = new Database()
