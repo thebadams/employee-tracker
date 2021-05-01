@@ -37,7 +37,14 @@ const gatherDepartmentInfo = async ()=>{
         message: "Please input the new department's name."
     })
     const deptName = deptInfo.deptName;
-    console.log(deptName);
+    console.log(deptName[0]);
+}
+// database.displayDepartmentsTable()
+const generateDepartmentList = async () =>{
+    database.createDBConnection()
+    console.log("generation started")
+    const deptTable = await database.getDepartmentsTable()
+    console.log(deptTable);
 }
 
 const gatherRoleInfo = async ()=>{
@@ -103,4 +110,5 @@ const init = async () => {
     return checkMenuChoice;
 }
 
-init()
+// init()
+generateDepartmentList()

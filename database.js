@@ -1,6 +1,6 @@
 const mysql = require('mysql');
-const inquirer = require('mysql');
-const cTable = require('console.table');
+// const inquirer = require('mysql');
+// const cTable = require('console.table');
 
 class Database {
 	constructor(
@@ -23,14 +23,14 @@ class Database {
 		this.tables = tables;
 	}
 	// database creation functions
-	async createDBConnection() {
-		return (this.connection = mysql.createConnection({
+	createDBConnection() {
+		this.connection = mysql.createConnection({
 			host: this.host,
 			port: this.port,
 			user: this.user,
 			password: this.password,
 			database: this.database
-		}));
+		});
 	}
 	async connectToDB() {
 		return this.connection.connect((err) => {
@@ -154,6 +154,9 @@ class Database {
 }
 
 const database = new Database();
+// database.createDBConnection();
+// database.createDBConnection();
+// database.getDepartmentsTable()
 
 // database.createDBConnection();
 // // database.addNewDepartment('Administration');
@@ -162,7 +165,8 @@ const database = new Database();
 // database.disconnectFromDB();
 // database.connectToDB();
 //database.displayEmployeesTable();
-// database.displayDepartmentsTable();
+// database.displayDepartmentsTable
+
 // database.displayRolesTable();
 // database.disconnectFromDB();
 // const connection = mysql.createConnection({
