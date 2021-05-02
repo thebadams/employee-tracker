@@ -35,9 +35,9 @@ class Database {
 }
 
 const database = new Database();
-database.selectEmployeeTable();
-database.selectRoleTable();
-database.selectDepartmentTable();
+// database.selectEmployeeTable();
+// database.selectRoleTable();
+// database.selectDepartmentTable();
 // database.createDBConnection();
 // database.createDBConnection();
 // database.connectToDB();
