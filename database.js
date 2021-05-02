@@ -21,10 +21,7 @@ class Database {
 			(this.password = password),
 			(this.database = database);
 		this.tables = tables;
-	}
-	// database creation functions
-	createDBConnection() {
-		this.connection = mysql.createConnection({
+        this.connection = mysql.createConnection({
 			host: this.host,
 			port: this.port,
 			user: this.user,
@@ -32,6 +29,7 @@ class Database {
 			database: this.database
 		});
 	}
+	// database creation functions
 	async connectToDB() {
 		return this.connection.connect((err) => {
 			if (err) throw err;
@@ -42,121 +40,20 @@ class Database {
 		return this.connection.end();
 	}
 	// get information functions
-	async displayEmployeesTable() {
-		//this.connectToDB();
-		return this.connection.query(`SELECT * FROM ${this.tables.employeeTable}`, (err, res) => {
-			if (err) throw err;
-			console.table(res);
-		});
-	}
-	async displayDepartmentsTable() {
-		return this.connection.query(`SELECT * FROM ${this.tables.departmentTable}`, (err, res) => {
-			if (err) throw err;
-			console.table(res);
-		});
-	}
-	async displayRolesTable() {
-		return this.connection.query(`SELECT * FROM ${this.tables.roleTable}`, (err, res) => {
-			if (err) throw err;
-			console.table(res);
-		});
-	}
-
-	// get tables raw information
-	async getEmployeesTable() {
-		//this.connectToDB();
-		return this.connection.query(`SELECT * FROM ${this.tables.employeeTable}`, (err, res) => {
-			if (err) throw err;
-			return res;
-		});
-	}
-
 	async getDepartmentsTable() {
-		return this.connection.query(`SELECT * FROM ${this.tables.departmentTable}`, (err, res) => {
-			if (err) throw err;
-			return res;
-		});
-	}
-
-	async getRolesTable() {
-		return this.connection.query(`SELECT * FROM ${this.tables.roleTable}`, (err, res) => {
-			if (err) throw err;
-			return res;
-		});
-	}
-
-	// insert new rows
-
-	async addNewDepartment(departmentName) {
-		return this.connection.query(
-			`INSERT INTO ${this.tables.departmentTable}(name) VALUES('${departmentName}')`,
-			(err, res) => {
-				if (err) throw err;
-				console.log('Successfully Added');
-			}
-		);
-	}
-
-	async addNewRole(roleTitle, salary, department_id) {
-		return this.connection.query(
-			`INSERT INTO ${this.tables
-				.roleTable}(title, salary, department_id) VALUES('${roleTitle}', ${salary}, ${department_id})`,
-			(err, res) => {
-				if (err) throw err;
-				console.log('Successfully Added');
-			}
-		);
-	}
-
-	async addNewEmployee(first_name, last_name, role_id, manager_id) {
-		return this.connection.query(
-			`INSERT INTO ${this.tables
-				.employeeTable} VALUES('${first_name}', '${last_name}', ${role_id}, ${manager_id})`,
-			(err, res) => {
-				if (err) throw err;
-				console.log('Success');
-			}
-		);
-	}
-	async updateEmployee(firstName, lastName, roleID, managerID, whereClause) {
-		return this.connection.query(
-			`UPDATE ${this.tables
-				.employeeTable} SET  first_name = '${firstName}', last_name = '${lastName}', role_id =${roleID}, manager_id=${managerID} WHERE ?`,
-			whereClause,
-			(err, res) => {
-				if (err) throw err;
-				console.log('Successfully Updated');
-			}
-		);
-	}
-	async updateRole(title, department_id, salary, whereClause) {
-		return this.connection.query(
-			`UPDATE ${this.tables
-				.roleTable} SET title='${title}', salary=${salary}, department_id=${department_id} WHERE ?`,
-			whereClause,
-			(err, res) => {
-				if (err) throw err;
-				console.log('Successfully Updated');
-			}
-		);
-	}
-
-	async updateDepartment(name, whereClause) {
-		return this.connection.query(
-			`UPDATE ${this.tables.departmentTable} SET name='${name} WHERE ?`,
-			whereClause,
-			(err, res) => {
-				if (err) throw err;
-				console.log('Successfully Updated');
-			}
-		);
-	}
+        return this.connection.query(`SELECT * FROM departments`, (err, res)=>{
+            if(err) throw err;
+            return res
+        })
+    }
 }
 
 const database = new Database();
 // database.createDBConnection();
 // database.createDBConnection();
-// database.getDepartmentsTable()
+// database.connectToDB();
+// database.getDepartmentsTable();
+// database.disconnectFromDB();
 
 // database.createDBConnection();
 // // database.addNewDepartment('Administration');

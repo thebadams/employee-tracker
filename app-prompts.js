@@ -1,5 +1,25 @@
 const inquirer = require('inquirer');
+const mysql = require('mysql')
 const database = require('./database')
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+
+  // Your port; if not 3306
+  port: 3306,
+
+  // Your username
+  user: 'root',
+
+  // Your password
+  password: 'Bp@olo21992',
+  database: 'company_db',
+});
+
+connection.connect((err)=>{
+    if(err) throw err;
+    console.log(`connected as id ${connection.threadId}`)
+})
 
 
 const startApp = async () => {
@@ -20,10 +40,10 @@ const checkUserChoice = async (userChoice) =>{
             gatherDepartmentInfo();
             break;
         case "Add Role":
-            gatherRoleInfo();
+            generateDepartmentList();
             break;
         case "Add Employee":
-            gatherEmployeeInfo();
+            gatherEmployeeInfo()
             break;
         default:
             console.log("Nothing Chosen");
@@ -39,19 +59,36 @@ const gatherDepartmentInfo = async ()=>{
     const deptName = deptInfo.deptName;
     console.log(deptName[0]);
 }
-// database.displayDepartmentsTable()
-const generateDepartmentList = async () =>{
-    database.createDBConnection()
-    console.log("generation started")
-    const deptTable = await database.getDepartmentsTable()
-    console.log(deptTable);
+
+const generateDepartmentList = ()=>{
+    connection.query("SELECT * FROM departments", (err, res)=>{
+        if (err) throw err;
+        // console.log(res);
+        const deptList = res.map((el)=>{
+            return {
+                name: el.name,
+                value: el.id
+            }
+        })
+       gatherRoleInfo(deptList)
+       connection.end();
+    })
+    
 }
 
-const gatherRoleInfo = async ()=>{
+// generateDepartmentList();
+// database.displayDepartmentsTable()
+// const generateDepartmentsList =  ()=>{
+//     deptTable =  database.getDepartmentsTable()
+//     console.log();
+    
+//     // database.disconnectFromDB();
+// }
+const gatherRoleInfo = async (deptList)=>{
     const roleInfo = await inquirer.prompt([
         {
         type: "list",
-        choices: ["Department 1", "Department 2", "Department 3", "Department 4"],
+        choices: deptList,
         message: "Please Choose Which Department To Add this Role Into",
         name: "roleDept"
         },
@@ -72,28 +109,66 @@ const gatherRoleInfo = async ()=>{
     console.log(roleInfo);
 }
 
+
+const generateRoleList = async () => {
+    connection.query("SELECT * FROM roles", (err, res)=>{
+        if(err) throw err;
+        let roleList = res.map((el)=>{
+            return {
+                name: el.title,
+                value: el.id
+            }
+        })
+        gatherEmployeeRole(roleList);
+        connection.end()
+    })
+}
+
+const generateManagerList = async () => {
+    connection.query("SELECT CONCAT(first_name, ' ', last_name) as name, id FROM employees WHERE id in (SELECT DISTINCT manager_id from employees)", (err,res)=>{
+        if(err) throw err;
+        let managerList = res.map((el)=>{
+            return {
+                name: el.name,
+                value: el.id
+            }
+        })
+        gatherEmployeeRole(managerList)
+    })
+}
+
+const gatherEmployeeRole = async (roleList)=>{
+    const employeeRole = await inquirer.prompt({
+        type: "list",
+        choices: roleList,
+        message: "Please Choose the Employee's Role",
+        name: "employeeRole"
+    })
+    return employeeRole;
+}
+
+const gatherEmployeeManager = async (managerList)=>{
+    const employeeManager =  await inquirer.prompt({
+        type: "list",
+        choices: managerList,
+        name: "employeeManager",
+        message: "Please Choose the Employee's Manager"
+    })
+    return employeeManager;
+}
 const gatherEmployeeInfo = async ()=>{
+    const employeeRole = await generateRoleList()
+    const employeeManager = await generateManagerList()
     const employeeInfo = await inquirer.prompt([
         {
-           type: "list",
-           choices: ["Role 1", "Role 2", "Role 3", "Role 4"],
-           name: "employeeRole",
-           message: "Please Choose and Employee Role"
+            type: "input",
+            message:"Please Give the Employee's First Name",
+            name: "employeeFirstName"
         },
         {
             type: "input",
-            message: "Please give the Employee's First Name",
-            name: "employeeFirstName",
-        },
-        {
-            type: "input",
-            message: "Please give the employee's last name",
+            message: "Please Give the Employee's Last Name",
             name: "employeeLastName"
-        },
-        {
-            type: "list",
-            choices: ["Manager 1", "Manager 2", "Manager 3", "No Manager"],
-            name: "employeeManager"
         }
     ])
     employeeInfo.employeeFirstName = employeeInfo.employeeFirstName.trim();
@@ -101,7 +176,7 @@ const gatherEmployeeInfo = async ()=>{
     if(employeeInfo.employeeManager==="No Manager"){
         employeeInfo.employeeManager = null;
     }
-    console.log(employeeInfo)
+    console.log(employeeInfo, employeeRole, employeeManager);
 }
 
 const init = async () => {
@@ -110,5 +185,11 @@ const init = async () => {
     return checkMenuChoice;
 }
 
-// init()
-generateDepartmentList()
+init()
+// generateDepartmentList()
+// console.log(database)
+// database.createDBConnection();
+// const departmentsTable = database.getDepartmentsTable();
+// console.log(departmentsTable)
+// // database.getDepartmentsTable();
+// database.disconnectFromDB();
