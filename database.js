@@ -32,9 +32,24 @@ class Database {
 		const [rows, schema] = await connection.query("SELECT * FROM departments");
 		console.table(rows);
 	}
+
+	async addNewDept(deptName) {
+		const {config}= this;
+		const connection = await mysql.createConnection(config);
+		try {
+			const results = await connection.query("INSERT INTO departments(name) VALUES(?)", [deptName])
+			console.log(results)
+
+		} catch (error) {
+			console.error(error);
+		}
+		
+
+	}
 }
 
 const database = new Database();
+database.addNewDept("IT")
 // database.selectEmployeeTable();
 // database.selectRoleTable();
 // database.selectDepartmentTable();

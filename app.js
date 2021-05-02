@@ -19,7 +19,7 @@ class Application{
     async checkUserChoice(userChoice){
         switch(userChoice) {
             case  "Add Department":
-                console.log("I Wish To Add A Department");
+               this.gatherDepartmentInfo();
                 break;
             case "Add Role":
                 console.log("I Wish to Add A Role");
@@ -30,6 +30,19 @@ class Application{
             default:
                 "Nothing Chosen"
         }
+    }
+    
+    async gatherDepartmentInfo() {
+        const userInput = await inquirer.prompt({
+            type: "input",
+            message: "Please Enter The New Department's Name",
+            name: "deptName"
+        })
+
+        const {deptName} = userInput
+        const results = await database.addNewDept(deptName);
+        console.log(results)
+
     }
 }
 
