@@ -1,54 +1,43 @@
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
+const cTable = require("console.table")
 // const inquirer = require('mysql');
 // const cTable = require('console.table');
-
 class Database {
-	constructor(
-		host = 'localhost',
-		port = 3306,
-		user = 'root',
-		password = 'Bp@olo21992',
-		database = 'company_db',
-		tables = {
-			employeeTable: 'employees',
-			roleTable: 'roles',
-			departmentTable: 'departments'
+	constructor() {
+		this.config = {
+			host: "localhost",
+			port: 3306,
+			user: "root",
+			password: "Bp@olo21992",
+			database: "company_db"
 		}
-	) {
-		(this.host = host),
-			(this.port = port),
-			(this.user = user),
-			(this.password = password),
-			(this.database = database);
-		this.tables = tables;
-        this.connection = mysql.createConnection({
-			host: this.host,
-			port: this.port,
-			user: this.user,
-			password: this.password,
-			database: this.database
-		});
 	}
-	// database creation functions
-	async connectToDB() {
-		return this.connection.connect((err) => {
-			if (err) throw err;
-			console.log(`connected as id ${this.connection.threadId}`);
-		});
+	async selectEmployeeTable(){
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		const [rows, schema] = await connection.query("SELECT * FROM employees");
+		console.table(rows);
 	}
-	async disconnectFromDB() {
-		return this.connection.end();
+
+	async selectRoleTable(){
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		const [rows, schema] = await connection.query("SELECT * FROM roles");
+		console.table(rows);
 	}
-	// get information functions
-	async getDepartmentsTable() {
-        return this.connection.query(`SELECT * FROM departments`, (err, res)=>{
-            if(err) throw err;
-            return res
-        })
-    }
+
+	async selectDepartmentTable () {
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		const [rows, schema] = await connection.query("SELECT * FROM departments");
+		console.table(rows);
+	}
 }
 
 const database = new Database();
+database.selectEmployeeTable();
+database.selectRoleTable();
+database.selectDepartmentTable();
 // database.createDBConnection();
 // database.createDBConnection();
 // database.connectToDB();
@@ -60,7 +49,7 @@ const database = new Database();
 // database.addNewRole('Secratary', 30000, 6);
 // // database.addNewEmployee('George', 'Lopez', 14)
 // database.disconnectFromDB();
-// database.connectToDB();
+// database.connectToDB()
 //database.displayEmployeesTable();
 // database.displayDepartmentsTable
 
@@ -75,26 +64,26 @@ const database = new Database();
 // });
 
 // function to select all employees
-const getEmployeeInfo = () => {
-	connection.query('SELECT * FROM employees', (err, res) => {
-		if (err) throw err;
-		console.table(res);
-	});
-};
+// const getEmployeeInfo = () => {
+// 	connection.query('SELECT * FROM employees', (err, res) => {
+// 		if (err) throw err;
+// 		console.table(res);
+// 	});
+// };
 
-const getDepartmentInfo = () => {
-	connection.query('SELECT * FROM departments', (err, res) => {
-		if (err) throw err;
-		console.table(res);
-	});
-};
+// const getDepartmentInfo = () => {
+// 	connection.query('SELECT * FROM departments', (err, res) => {
+// 		if (err) throw err;
+// 		console.table(res);
+// 	});
+// };
 
-const getRoleInfo = () => {
-	connection.query('SELECT * FROM roles', (err, res) => {
-		if (err) throw err;
-		console.table(res);
-	});
-};
+// const getRoleInfo = () => {
+// 	connection.query('SELECT * FROM roles', (err, res) => {
+// 		if (err) throw err;
+// 		console.table(res);
+// 	});
+// };
 
 const endConnection = () => {
 	connection.end();
