@@ -70,7 +70,7 @@ class Database {
 		const connection = await mysql.createConnection(config);
 		try {
 			const results = await connection.query("INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)", [employeeInfo.empFirstName, employeeInfo.empLastName, employeeInfo.empRole, employeeInfo.empMgr])
-			return results[0]
+			return  "Successfully Added New Employee"
 		} catch (error) {
 			console.error(error)
 		}

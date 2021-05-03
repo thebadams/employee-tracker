@@ -133,6 +133,16 @@ class Application{
        const results = await database.addNewEmployee(userInput);
        console.log(results);
     }
+    async generateEmployeeList() {
+        const employeeTable = await database.selectEmployeeTable();
+        const employeeList = employeeTable.map((employee)=>{
+            return {
+                name: `${employee.first_name} ${employee.last_name}`,
+                value: employee.id
+            }
+        })
+        return employeeList;
+    }
 }
 
 const app = new Application()
