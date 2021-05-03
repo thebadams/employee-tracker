@@ -9,7 +9,7 @@ class Application{
         const start =  await inquirer.prompt({
             type: "list",
             name: "startMenuChoice",
-            choices: ["Add Department", "Add Role", "Add Employee"],
+            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role"],
             message: "Please Select What Action You Would Like To Take"
         })
         const userChoice = start.startMenuChoice
@@ -27,8 +27,10 @@ class Application{
             case "Add Employee":
                 this.gatherEmployeeInfo()
                 break;
+            case "Update Employee Role":
+                this.gatherNewEmployeeRole();
             default:
-                "Nothing Chosen"
+                console.log("Nothing Chosen")
         }
     }
     
@@ -142,6 +144,27 @@ class Application{
             }
         })
         return employeeList;
+    }
+
+    async gatherNewEmployeeRole() {
+        const employeeList = await this.generateEmployeeList();
+        const roleList = await this.generateRoleList();
+        const userInput = await inquirer.prompt([
+            {
+            type: "list",
+            message: "Please Choose Which Employee You Would Like To Update",
+            choices: employeeList,
+            name: "updatedEmployee"
+            },
+            {
+                type: "list",
+                message: "Please Choose The New Role To Assign the Employee",
+                choices: roleList,
+                name: "updatedEmpRole"
+            }
+        ])
+        const results = await database.updateEmployeeRole(userInput)
+        console.log(results)
     }
 }
 
