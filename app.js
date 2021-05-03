@@ -9,7 +9,7 @@ class Application{
         const start =  await inquirer.prompt({
             type: "list",
             name: "startMenuChoice",
-            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role"],
+            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role", "View Employees In A Department"],
             message: "Please Select What Action You Would Like To Take"
         })
         const userChoice = start.startMenuChoice
@@ -29,6 +29,10 @@ class Application{
                 break;
             case "Update Employee Role":
                 this.gatherNewEmployeeRole();
+                break;
+            case "View Employees In a Department":
+                this.viewDepartment();
+                break;
             default:
                 console.log("Nothing Chosen")
         }
@@ -178,11 +182,24 @@ class Application{
 
         const results = await database.selectEmployeesInDept(userInput);
         console.table(results)
-    } 
+    }
+    
+    async viewRole() {
+        const roleList = await this.generateRoleList();
+        const userInput = await inquirer.prompt({
+            type: "list",
+            message: "Please Choose Which Role You Wish To View",
+            choices: roleList,
+            name: "role"
+        })
+
+        const results = await database.selectEmployeesInRole(userInput)
+        console.table(results)
+    }
 }
 
 const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.viewDepartment();
+app.viewRole();
