@@ -89,7 +89,7 @@ class Application{
                 value: role.id
             }
         })
-       console.log(roleList)
+       return roleList;
     }
 
     async generateManagerList() {
@@ -100,7 +100,38 @@ class Application{
                 value: manager.id
             }
         })
-        console.log(managerList)
+        return managerList;
+    }
+
+    async gatherEmployeeInfo(){
+        const managerList = await this.generateManagerList()
+        const roleList = await this.generateRoleList()
+        const userInput = await inquirer.prompt([
+            {
+                type: "input",
+                message: "Please Input the New Employee's First Name",
+                name: "empFirstName"
+            },
+            {
+                type: "input",
+                message: "Please Input the New Employee's Last Name",
+                name: "empLastName"
+            },
+            {
+                type: "list",
+                message: "Please Choose the new Employee's Role",
+                name: "empRole",
+                choices: roleList
+            },
+            {
+                type: "list",
+                message: "Please Choose the new Employee's Manager",
+                name: "empMgr",
+                choices: [...managerList, {name:"No Manager", value: null}]
+            }
+        ])
+       const results = await database.addNewEmployee(userInput);
+       console.log(results);
     }
 }
 
@@ -108,5 +139,4 @@ const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.generateRoleList();
-app.generateManagerList();
+app.gatherEmployeeInfo();

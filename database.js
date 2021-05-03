@@ -64,6 +64,17 @@ class Database {
 			console.error(error)
 		}
 	}
+
+	async addNewEmployee(employeeInfo){
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		try {
+			const results = await connection.query("INSERT INTO employees(first_name, last_name, role_id, manager_id) VALUES(?, ?, ?, ?)", [employeeInfo.empFirstName, employeeInfo.empLastName, employeeInfo.empRole, employeeInfo.empMgr])
+			return results[0]
+		} catch (error) {
+			console.error(error)
+		}
+	}
 }
 
 const database = new Database();
