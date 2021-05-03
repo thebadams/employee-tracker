@@ -22,7 +22,7 @@ class Application{
                this.gatherDepartmentInfo();
                 break;
             case "Add Role":
-                console.log("I Wish to Add A Role");
+                this.gatherRoleInfo();
                 break;
             case "Add Employee":
                 console.log("I Would Like To Add An Employee");
@@ -75,7 +75,10 @@ class Application{
                 name: "roleSalary"
             }
         ])
-        console.log(userInput)
+        const results = await database.addNewRole(userInput)
+        console.log(results)
+
+        
     }
 }
 

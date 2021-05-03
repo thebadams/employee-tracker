@@ -46,10 +46,21 @@ class Database {
 		
 
 	}
+
+	async addNewRole(roleInfo){
+		const {config} = this;
+		const connection = await mysql.createConnection(config)
+		try {
+			const results = await connection.query("INSERT INTO roles(title, department_id, salary) VALUES(?, ?, ?)", [roleInfo.roleTitle, roleInfo.roleDept, roleInfo.roleSalary])
+			return results[0]
+		} catch (error) {
+			console.error(error)
+		}
+	}
 }
 
 const database = new Database();
-database.addNewDept("IT")
+// database.addNewDept("IT")
 // database.selectEmployeeTable();
 // database.selectRoleTable();
 // database.selectDepartmentTable();
