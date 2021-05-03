@@ -91,8 +91,8 @@ class Database {
 		const {config} = this;
 		const connection = await mysql.createConnection(config);
 		try {
-			const [rows, schema] = await connection.query("SELECT distinct emp.first_name, emp.last_name, concat(mgr.first_name, ' ', mgr.last_name) as manager_name, emp.id, emp.manager_id, roles.title, dept.name as department FROM employees as emp, roles as roles, departments as dept, employees as mgr WHERE emp.role_id = roles.id AND roles.department_id = dept.id AND emp.manager_id = mgr.id AND roles.department_id = ? ORDER BY emp.last_name, emp.first_name", [deptInfo])
-			console.log(rows)
+			const [rows, schema] = await connection.query("SELECT distinct emp.first_name, emp.last_name, concat(mgr.first_name, ' ', mgr.last_name) as manager_name, emp.id, emp.manager_id, roles.title, dept.name as department FROM employees as emp, roles as roles, departments as dept, employees as mgr WHERE emp.role_id = roles.id AND roles.department_id = dept.id AND emp.manager_id = mgr.id AND roles.department_id = ? ORDER BY emp.last_name, emp.first_name", [deptInfo.dept])
+			return rows
 		} catch (error) {
 			console.error(error)
 		}
@@ -100,7 +100,7 @@ class Database {
 }
 
 const database = new Database();
-database.selectEmployeesInDept();
+// database.selectEmployeesInDept();
 // database.addNewDept("IT")
 // database.selectEmployeeTable();
 // database.selectRoleTable();

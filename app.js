@@ -166,10 +166,23 @@ class Application{
         const results = await database.updateEmployeeRole(userInput)
         console.log(results)
     }
+
+    async viewDepartment() {
+        const deptList = await this.generateDepartmentList();
+        const userInput = await inquirer.prompt({
+            type: "list",
+            message: "Please Choose Which Department You Wish To View",
+            choices: deptList,
+            name: "dept"
+        })
+
+        const results = await database.selectEmployeesInDept(userInput);
+        console.table(results)
+    } 
 }
 
 const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.gatherNewEmployeeRole()
+app.viewDepartment();
