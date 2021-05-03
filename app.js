@@ -9,11 +9,11 @@ class Application{
         const start =  await inquirer.prompt({
             type: "list",
             name: "startMenuChoice",
-            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role", "View Employees In A Department"],
+            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role", "View Employees In A Department", "View an Employee"],
             message: "Please Select What Action You Would Like To Take"
         })
         const userChoice = start.startMenuChoice
-       return userChoice
+       await this.checkUserChoice(userChoice)
     }
 
     async checkUserChoice(userChoice){
@@ -25,13 +25,16 @@ class Application{
                 this.gatherRoleInfo();
                 break;
             case "Add Employee":
-                this.gatherEmployeeInfo()
+                this.gatherEmployeeInfo();
                 break;
             case "Update Employee Role":
                 this.gatherNewEmployeeRole();
                 break;
             case "View Employees In a Department":
                 this.viewDepartment();
+                break;
+            case "View an Employee":
+                this.viewEmployee();
                 break;
             default:
                 console.log("Nothing Chosen")
@@ -48,6 +51,8 @@ class Application{
         const {deptName} = userInput
         const results = await database.addNewDept(deptName);
         console.log(results)
+        
+        await this.startMenu()
 
     }
 
@@ -138,6 +143,7 @@ class Application{
         ])
        const results = await database.addNewEmployee(userInput);
        console.log(results);
+       await this.startMenu()
     }
     async generateEmployeeList() {
         const employeeTable = await database.selectEmployeeTable();
@@ -169,6 +175,8 @@ class Application{
         ])
         const results = await database.updateEmployeeRole(userInput)
         console.log(results)
+
+        await this.startMenu()
     }
 
     async viewDepartment() {
@@ -182,6 +190,7 @@ class Application{
 
         const results = await database.selectEmployeesInDept(userInput);
         console.table(results)
+        await this.startMenu()
     }
     
     async viewRole() {
@@ -195,6 +204,7 @@ class Application{
 
         const results = await database.selectEmployeesInRole(userInput)
         console.table(results)
+        await this.startMenu();
     }
 
     async viewEmployee() {
@@ -205,10 +215,10 @@ class Application{
             choices: employeeList,
             name: "employee"
         })
-        console.log(userInput)
 
         const results = await database.selectEmployeeInfo(userInput)
         console.table(results)
+        await this.startMenu()
     }
 }
 
@@ -216,4 +226,4 @@ const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.viewEmployee();
+module.exports = app
