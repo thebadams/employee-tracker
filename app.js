@@ -25,7 +25,7 @@ class Application{
                 this.gatherRoleInfo();
                 break;
             case "Add Employee":
-                console.log("I Would Like To Add An Employee");
+                this.gatherEmployeeInfo()
                 break;
             default:
                 "Nothing Chosen"
@@ -80,10 +80,33 @@ class Application{
 
         
     }
+
+    async generateRoleList(){
+        const roleTable = await database.selectRoleTable();
+        const roleList = roleTable.map((role)=>{
+            return {
+                name: role.title,
+                value: role.id
+            }
+        })
+       console.log(roleList)
+    }
+
+    async generateManagerList() {
+        const managerView = await database.selectManagers();
+        const managerList = managerView.map((manager)=>{
+            return {
+                name: manager.name,
+                value: manager.id
+            }
+        })
+        console.log(managerList)
+    }
 }
 
 const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.gatherRoleInfo();
+app.generateRoleList();
+app.generateManagerList();

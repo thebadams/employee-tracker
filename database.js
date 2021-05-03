@@ -23,13 +23,20 @@ class Database {
 		const {config} = this;
 		const connection = await mysql.createConnection(config);
 		const [rows, schema] = await connection.query("SELECT * FROM roles");
-		console.table(rows);
+		return rows
 	}
 
 	async selectDepartmentTable () {
 		const {config} = this;
 		const connection = await mysql.createConnection(config);
 		const [rows, schema] = await connection.query("SELECT * FROM departments");
+		return rows
+	}
+	
+	async selectManagers(){
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		const [rows, schema] = await connection.query("SELECT CONCAT(first_name, ' ', last_name) as name, id FROM employees WHERE id in (SELECT DISTINCT manager_id from employees)")
 		return rows
 	}
 
@@ -60,6 +67,7 @@ class Database {
 }
 
 const database = new Database();
+
 // database.addNewDept("IT")
 // database.selectEmployeeTable();
 // database.selectRoleTable();
