@@ -30,7 +30,7 @@ class Application{
             case "Update Employee Role":
                 this.gatherNewEmployeeRole();
                 break;
-            case "View Employees In a Department":
+            case "View Employees In A Department":
                 this.viewDepartment();
                 break;
             case "View an Employee":
