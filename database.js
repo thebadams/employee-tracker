@@ -30,7 +30,7 @@ class Database {
 		const {config} = this;
 		const connection = await mysql.createConnection(config);
 		const [rows, schema] = await connection.query("SELECT * FROM departments");
-		console.table(rows);
+		return rows
 	}
 
 	async addNewDept(deptName) {
@@ -38,7 +38,7 @@ class Database {
 		const connection = await mysql.createConnection(config);
 		try {
 			const results = await connection.query("INSERT INTO departments(name) VALUES(?)", [deptName])
-			console.log(results)
+			return results[0]
 
 		} catch (error) {
 			console.error(error);

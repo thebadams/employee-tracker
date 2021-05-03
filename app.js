@@ -44,8 +44,43 @@ class Application{
         console.log(results)
 
     }
+
+    async generateDepartmentList(){
+        const deptTable = await database.selectDepartmentTable()
+        const deptList = deptTable.map((deptRow)=>{
+            return {
+                name: deptRow.name,
+                value: deptRow.id
+            }
+        })
+        return deptList
+    }
+    async gatherRoleInfo(){
+        const deptList = await this.generateDepartmentList()
+        const userInput = await inquirer.prompt([
+            {
+                type: "list",
+                message: "Please Choose Which Department To Add the Role To",
+                name: "roleDept",
+                choices: deptList
+            },
+            {
+                type: "input",
+               message: "Please Input the Role Title",
+               name: "roleTitle" 
+            },
+            {
+                type: "input",
+                message: "Please Input the Role's Salary",
+                name: "roleSalary"
+            }
+        ])
+        console.log(userInput)
+    }
 }
 
 const app = new Application()
 
-app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
+// app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
+
+app.gatherRoleInfo();
