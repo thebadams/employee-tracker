@@ -172,4 +172,4 @@ const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.gatherEmployeeInfo();
+app.gatherNewEmployeeRole()

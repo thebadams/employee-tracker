@@ -16,7 +16,7 @@ class Database {
 		const {config} = this;
 		const connection = await mysql.createConnection(config);
 		const [rows, schema] = await connection.query("SELECT * FROM employees");
-		console.table(rows);
+		return rows;
 	}
 
 	async selectRoleTable(){
@@ -73,6 +73,17 @@ class Database {
 			return  "Successfully Added New Employee"
 		} catch (error) {
 			console.error(error)
+		}
+	}
+
+	async updateEmployeeRole(employeeInfo) {
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		try {
+			const results = await connection.query("UPDATE employees SET role_id = ? WHERE id= ?", [employeeInfo.updatedEmpRole, employeeInfo.updatedEmployee])
+			return results
+		} catch (error) {
+			
 		}
 	}
 }
