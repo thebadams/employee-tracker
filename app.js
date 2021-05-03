@@ -196,10 +196,24 @@ class Application{
         const results = await database.selectEmployeesInRole(userInput)
         console.table(results)
     }
+
+    async viewEmployee() {
+        const employeeList = await this.generateEmployeeList();
+        const userInput = await inquirer.prompt({
+            type: "list",
+            message: "Please Choose the Employee You Wish To View",
+            choices: employeeList,
+            name: "employee"
+        })
+        console.log(userInput)
+
+        const results = await database.selectEmployeeInfo(userInput)
+        console.table(results)
+    }
 }
 
 const app = new Application()
 
 // app.startMenu().then(userChoice=>app.checkUserChoice(userChoice))
 
-app.viewRole();
+app.viewEmployee();

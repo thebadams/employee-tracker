@@ -108,6 +108,16 @@ class Database {
 			console.error(error)
 		}
 	}
+	async selectEmployeeInfo(employeeInfo) {
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		try {
+			const [rows, schema] = await connection.query("SELECT distinct emp.first_name, emp.last_name, concat(mgr.first_name, ' ', mgr.last_name) as manager_name, emp.id, emp.manager_id, roles.title, dept.name as department FROM employees as emp INNER JOIN roles ON emp.role_id=roles.id INNER JOIN departments as dept ON roles.department_id=dept.id LEFT JOIN employees as mgr ON emp.manager_id=mgr.id WHERE emp.id = ?", [employeeInfo.employee])
+			return rows
+		} catch (error) {
+			console.error(error)
+		}
+	}
 }
 
 const database = new Database();
