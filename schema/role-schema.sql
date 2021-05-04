@@ -9,4 +9,6 @@ CREATE TABLE roles(
 );
 
 ALTER TABLE roles
-ADD FOREIGN KEY(department_id) REFERENCES departments(id);
+ADD FOREIGN KEY(department_id) REFERENCES departments(id)
+ON UPDATE  CASCADE
+ON DELETE CASCADE;
