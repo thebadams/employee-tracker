@@ -9,11 +9,17 @@ class Application{
         const start =  await inquirer.prompt({
             type: "list",
             name: "startMenuChoice",
-            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role", "View Employees In A Department", "View an Employee"],
+            choices: ["Add Department", "Add Role", "Add Employee", "Update Employee Role", "View Employees In A Department", "View an Employee", "View Employees By Role", "Exit"],
             message: "Please Select What Action You Would Like To Take"
         })
         const userChoice = start.startMenuChoice
        await this.checkUserChoice(userChoice)
+    }
+
+    async end() {
+        database.endConnection();
+        console.log("Program Ended, Goodbye")
+        return
     }
 
     async checkUserChoice(userChoice){
@@ -36,6 +42,12 @@ class Application{
             case "View an Employee":
                 this.viewEmployee();
                 break;
+            case "View Employees By Role":
+                this.viewRole();
+                break;
+            case "Exit":
+                this.end();
+                break
             default:
                 console.log("Nothing Chosen")
         }

@@ -12,6 +12,12 @@ class Database {
 			database: "company_db"
 		}
 	}
+
+	async endConnection() {
+		const {config} = this;
+		const connection = await mysql.createConnection(config);
+		return connection.end();
+	}
 	async selectEmployeeTable(){
 		const {config} = this;
 		const connection = await mysql.createConnection(config);
@@ -59,7 +65,7 @@ class Database {
 		const connection = await mysql.createConnection(config)
 		try {
 			const results = await connection.query("INSERT INTO roles(title, department_id, salary) VALUES(?, ?, ?)", [roleInfo.roleTitle, roleInfo.roleDept, roleInfo.roleSalary])
-			return results[0]
+			return "Successfully Added New Role"
 		} catch (error) {
 			console.error(error)
 		}
@@ -81,7 +87,7 @@ class Database {
 		const connection = await mysql.createConnection(config);
 		try {
 			const results = await connection.query("UPDATE employees SET role_id = ? WHERE id= ?", [employeeInfo.updatedEmpRole, employeeInfo.updatedEmployee])
-			return results
+			return "Successfully Updated Employee"
 		} catch (error) {
 			console.error(error)
 		}
